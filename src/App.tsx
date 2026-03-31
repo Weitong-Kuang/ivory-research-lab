@@ -6,6 +6,8 @@ import Research from "./pages/Research";
 import Systems from "./pages/Systems";
 import Experiments from "./pages/Experiments";
 import ArticleDetail from "./pages/ArticleDetail";
+import SystemDetail from "./pages/SystemDetail";
+import ExperimentDetail from "./pages/ExperimentDetail";
 import { LanguageProvider } from "./context/LanguageContext";
 
 export default function App() {
@@ -19,7 +21,9 @@ export default function App() {
             <Route path="research" element={<Research />} />
             <Route path="research/:id" element={<ArticleDetail />} />
             <Route path="systems" element={<Systems />} />
+            <Route path="systems/:id" element={<SystemDetail />} />
             <Route path="experiments" element={<Experiments />} />
+            <Route path="experiments/:id" element={<ExperimentDetail />} />
           </Route>
         </Routes>
       </BrowserRouter>
