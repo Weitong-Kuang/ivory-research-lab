@@ -1,10 +1,12 @@
-import { useParams, useNavigate } from "react-router-dom";
+"use client";
+
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { ArrowLeft, Cpu, Box, Layout, Activity, Clock, FileText } from "lucide-react";
-import { systems } from "../data/systems";
-import { useTranslation } from "../context/LanguageContext";
+import { useTranslation } from "../../../../context/LanguageContext";
 import ReactMarkdown from "react-markdown";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const IconMap: Record<string, any> = {
   Box: Box,
@@ -14,28 +16,11 @@ const IconMap: Record<string, any> = {
 
 type Tab = 'overview' | 'updates';
 
-export default function SystemDetail() {
-  const { id } = useParams();
-  const navigate = useNavigate();
+export default function SystemDetailClient({ system, lang }: { system: any, lang: string }) {
   const { language, t } = useTranslation();
   const [activeTab, setActiveTab] = useState<Tab>('overview');
+  const router = useRouter();
   
-  const system = systems.find(s => s.id === id);
-
-  if (!system) {
-    return (
-      <div className="max-w-4xl mx-auto px-6 py-20 text-center">
-        <h1 className="text-2xl font-bold">System not found</h1>
-        <button 
-          onClick={() => navigate("/systems")}
-          className="mt-4 text-geist-success hover:underline"
-        >
-          {t('common.backToSystems')}
-        </button>
-      </div>
-    );
-  }
-
   const title = language === 'en' ? system.titleEn : system.titleZh;
   const subtitle = language === 'en' ? system.subtitleEn : system.subtitleZh;
   const content = language === 'en' ? system.contentEn : system.contentZh;
@@ -47,13 +32,13 @@ export default function SystemDetail() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
       >
-        <button 
-          onClick={() => navigate("/systems")}
+        <Link 
+          href={`/${lang}/systems`}
           className="flex items-center gap-2 text-accents-5 hover:text-foreground transition-colors mb-12 group"
         >
           <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
           <span className="text-sm font-bold uppercase tracking-widest">{t('common.backToSystems')}</span>
-        </button>
+        </Link>
 
         <div className="mb-12">
           <div className="flex flex-col md:flex-row md:items-center gap-6 mb-8">
@@ -136,7 +121,7 @@ export default function SystemDetail() {
             <div className="flex items-center gap-2">
               <Clock size={14} />
               {t('system.updates')}
-              {system.updates.length > 0 && (
+              {system.updates?.length > 0 && (
                 <span className="ml-1 px-1.5 py-0.5 bg-accents-2 text-[10px] rounded-full">
                   {system.updates.length}
                 </span>
@@ -174,9 +159,9 @@ export default function SystemDetail() {
               transition={{ duration: 0.2 }}
               className="mb-20"
             >
-              {system.updates.length > 0 ? (
+              {system.updates?.length > 0 ? (
                 <div className="space-y-12">
-                  {system.updates.map((update, idx) => (
+                  {system.updates.map((update: any, idx: number) => (
                     <div key={idx} className="relative pl-10 border-l border-accents-2">
                       <div className="absolute left-[-6px] top-0 w-3 h-3 rounded-full bg-foreground border-4 border-background" />
                       <div className="mb-3">

@@ -7,6 +7,7 @@ subtitleZh: 认知扩展
 status: beta
 progress: 60
 icon: Cpu
+showOnHome: true
 updates:
   - date: 2026-03-10
     titleEn: Semantic Engine Update

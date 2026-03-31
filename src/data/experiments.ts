@@ -15,6 +15,7 @@ export interface Experiment {
   resultsEn: string;
   resultsZh: string;
   date: string;
+  showOnHome?: boolean;
 }
 
 const modules = import.meta.glob('/src/content/experiments/*.md', { query: '?raw', import: 'default', eager: true });

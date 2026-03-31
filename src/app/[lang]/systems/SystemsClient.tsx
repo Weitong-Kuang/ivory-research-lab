@@ -1,8 +1,9 @@
+"use client";
+
 import { motion } from "motion/react";
-import { useTranslation } from "../context/LanguageContext";
+import { useTranslation } from "../../../context/LanguageContext";
 import { Cpu, Layout, Box, ArrowRight } from "lucide-react";
-import { systems } from "../data/systems";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 
 const IconMap: Record<string, any> = {
   Box: Box,
@@ -10,7 +11,7 @@ const IconMap: Record<string, any> = {
   Layout: Layout,
 };
 
-export default function Systems() {
+export default function SystemsClient({ systems, lang }: { systems: any[], lang: string }) {
   const { language, t } = useTranslation();
 
   return (
@@ -56,7 +57,7 @@ export default function Systems() {
                   {language === 'en' ? system.descriptionEn : system.descriptionZh}
                 </p>
                 <Link 
-                  to={`/systems/${system.id}`}
+                  href={`/${lang}/systems/${system.id}`}
                   className="flex items-center gap-2 text-sm font-bold text-foreground group-hover:text-accents-5 transition-colors"
                 >
                   {t('system.explore')}

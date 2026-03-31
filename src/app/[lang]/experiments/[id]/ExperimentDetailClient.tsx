@@ -1,10 +1,11 @@
-import { useParams, useNavigate } from "react-router-dom";
+"use client";
+
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { ArrowLeft, Zap, Code, Terminal, Calendar, Activity, FileText, BarChart3 } from "lucide-react";
-import { experiments } from "../data/experiments";
-import { useTranslation } from "../context/LanguageContext";
+import { useTranslation } from "../../../../context/LanguageContext";
 import ReactMarkdown from "react-markdown";
+import Link from "next/link";
 
 const IconMap: Record<string, any> = {
   Zap: Zap,
@@ -14,28 +15,10 @@ const IconMap: Record<string, any> = {
 
 type Tab = 'overview' | 'results';
 
-export default function ExperimentDetail() {
-  const { id } = useParams();
-  const navigate = useNavigate();
+export default function ExperimentDetailClient({ experiment, lang }: { experiment: any, lang: string }) {
   const { language, t } = useTranslation();
   const [activeTab, setActiveTab] = useState<Tab>('overview');
   
-  const experiment = experiments.find(e => e.id === id);
-
-  if (!experiment) {
-    return (
-      <div className="max-w-4xl mx-auto px-6 py-20 text-center">
-        <h1 className="text-2xl font-bold">Experiment not found</h1>
-        <button 
-          onClick={() => navigate("/experiments")}
-          className="mt-4 text-geist-success hover:underline"
-        >
-          {t('common.backToExperiments')}
-        </button>
-      </div>
-    );
-  }
-
   const title = language === 'en' ? experiment.titleEn : experiment.titleZh;
   const subtitle = language === 'en' ? experiment.subtitleEn : experiment.subtitleZh;
   const content = language === 'en' ? experiment.contentEn : experiment.contentZh;
@@ -48,13 +31,13 @@ export default function ExperimentDetail() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
       >
-        <button 
-          onClick={() => navigate("/experiments")}
+        <Link 
+          href={`/${lang}/experiments`}
           className="flex items-center gap-2 text-accents-5 hover:text-foreground transition-colors mb-12 group"
         >
           <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
           <span className="text-sm font-bold uppercase tracking-widest">{t('common.backToExperiments')}</span>
-        </button>
+        </Link>
 
         <div className="mb-12">
           <div className="flex flex-col md:flex-row md:items-center gap-6 mb-8">
@@ -169,7 +152,7 @@ export default function ExperimentDetail() {
                   Final Findings
                 </h3>
                 <p className="text-2xl font-medium text-accents-6 leading-relaxed italic relative z-10">
-                  "{results}"
+                  &quot;{results}&quot;
                 </p>
               </div>
             </motion.div>

@@ -9,11 +9,13 @@ import ArticleDetail from "./pages/ArticleDetail";
 import SystemDetail from "./pages/SystemDetail";
 import ExperimentDetail from "./pages/ExperimentDetail";
 import { LanguageProvider } from "./context/LanguageContext";
+import ScrollToTop from "./components/ScrollToTop";
 
 export default function App() {
   return (
     <LanguageProvider>
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />

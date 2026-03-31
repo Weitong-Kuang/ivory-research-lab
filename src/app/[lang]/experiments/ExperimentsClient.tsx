@@ -1,8 +1,9 @@
+"use client";
+
 import { motion } from "motion/react";
-import { useTranslation } from "../context/LanguageContext";
+import { useTranslation } from "../../../context/LanguageContext";
 import { Zap, Code, Terminal, ArrowRight } from "lucide-react";
-import { experiments } from "../data/experiments";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 
 const IconMap: Record<string, any> = {
   Zap: Zap,
@@ -10,7 +11,7 @@ const IconMap: Record<string, any> = {
   Terminal: Terminal,
 };
 
-export default function Experiments() {
+export default function ExperimentsClient({ experiments, lang }: { experiments: any[], lang: string }) {
   const { language, t } = useTranslation();
 
   return (
@@ -56,7 +57,7 @@ export default function Experiments() {
                   {language === 'en' ? experiment.descriptionEn : experiment.descriptionZh}
                 </p>
                 <Link 
-                  to={`/experiments/${experiment.id}`}
+                  href={`/${lang}/experiments/${experiment.id}`}
                   className="flex items-center gap-2 text-sm font-bold text-foreground group-hover:text-accents-5 transition-colors"
                 >
                   {t('experiment.view')}

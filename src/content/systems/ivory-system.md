@@ -7,6 +7,7 @@ subtitleZh: 人生记录系统
 status: active
 progress: 85
 icon: Box
+showOnHome: true
 updates:
   - date: 2026-03-20
     titleEn: V2.0 Core Release

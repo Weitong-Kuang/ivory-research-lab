@@ -7,6 +7,7 @@ subtitleZh: 实验性界面
 status: planned
 progress: 30
 icon: Layout
+showOnHome: true
 updates: []
 ---
 

@@ -1,31 +1,14 @@
-import { useParams, useNavigate } from "react-router-dom";
+"use client";
+
 import { motion } from "motion/react";
 import { ArrowLeft, Calendar, Tag } from "lucide-react";
-import { articles } from "../data/articles";
-import { useTranslation } from "../context/LanguageContext";
+import { useTranslation } from "../../../../context/LanguageContext";
 import ReactMarkdown from "react-markdown";
+import Link from "next/link";
 
-export default function ArticleDetail() {
-  const { id } = useParams();
-  const navigate = useNavigate();
+export default function ArticleDetailClient({ article, lang }: { article: any, lang: string }) {
   const { language } = useTranslation();
   
-  const article = articles.find(a => a.id === id);
-
-  if (!article) {
-    return (
-      <div className="max-w-4xl mx-auto px-6 py-20 text-center">
-        <h1 className="text-2xl font-bold">Article not found</h1>
-        <button 
-          onClick={() => navigate("/writing")}
-          className="mt-4 text-geist-success hover:underline"
-        >
-          Back to Writing
-        </button>
-      </div>
-    );
-  }
-
   const title = language === 'en' ? article.titleEn : article.titleZh;
   const content = language === 'en' ? article.contentEn : article.contentZh;
 
@@ -35,13 +18,13 @@ export default function ArticleDetail() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
       >
-        <button 
-          onClick={() => navigate("/writing")}
+        <Link 
+          href={`/${lang}/research`}
           className="flex items-center gap-2 text-accents-5 hover:text-foreground transition-colors mb-12 group"
         >
           <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
           <span className="text-sm font-bold uppercase tracking-widest">Back to Journal</span>
-        </button>
+        </Link>
 
         <div className="mb-12">
           <div className="flex items-center gap-4 mb-6">

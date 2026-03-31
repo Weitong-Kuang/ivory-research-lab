@@ -1,11 +1,12 @@
+"use client";
+
 import { motion } from "motion/react";
-import { useTranslation } from "../context/LanguageContext";
+import { useTranslation } from "../../../context/LanguageContext";
 import { ArrowRight, BookOpen, Search as SearchIcon } from "lucide-react";
 import { useState } from "react";
-import { articles } from "../data/articles";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 
-export default function Research() {
+export default function ResearchClient({ articles, lang }: { articles: any[], lang: string }) {
   const { language, t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -60,7 +61,7 @@ export default function Research() {
                 transition={{ delay: index * 0.1 }}
                 className="group"
               >
-                <Link to={`/research/${article.id}`} className="block">
+                <Link href={`/${lang}/research/${article.id}`} className="block">
                   <div className="flex items-center gap-4 mb-4">
                     <span className="text-xs font-bold text-accents-4 uppercase tracking-widest">{article.date}</span>
                     <span className="w-1 h-1 bg-accents-2 rounded-full" />

@@ -1,3 +1,5 @@
+"use client";
+
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 type Language = 'en' | 'zh';
@@ -167,8 +169,8 @@ export const translations: Record<Language, Record<string, string>> = {
   }
 };
 
-export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [language, setLanguage] = useState<Language>('en');
+export function LanguageProvider({ children, initialLanguage }: { children: ReactNode, initialLanguage: Language }) {
+  const [language, setLanguage] = useState<Language>(initialLanguage);
 
   const t = (key: string) => {
     return translations[language][key] || key;

@@ -20,6 +20,7 @@ export interface System {
     contentEn: string;
     contentZh: string;
   }[];
+  showOnHome?: boolean;
 }
 
 const modules = import.meta.glob('/src/content/systems/*.md', { query: '?raw', import: 'default', eager: true });

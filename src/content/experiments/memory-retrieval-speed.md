@@ -7,6 +7,7 @@ subtitleZh: 延迟测试
 status: completed
 date: 2026-03-10
 icon: Zap
+showOnHome: true
 resultsEn: Successfully reduced average retrieval latency to 120ms.
 resultsZh: 成功将平均检索延迟降低至 120 毫秒。
 ---
