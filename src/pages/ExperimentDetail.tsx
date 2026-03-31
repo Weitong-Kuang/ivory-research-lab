@@ -1,6 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { motion } from "motion/react";
-import { ArrowLeft, Zap, Code, Terminal, Calendar, Activity } from "lucide-react";
+import { useState } from "react";
+import { motion, AnimatePresence } from "motion/react";
+import { ArrowLeft, Zap, Code, Terminal, Calendar, Activity, FileText, BarChart3 } from "lucide-react";
 import { experiments } from "../data/experiments";
 import { useTranslation } from "../context/LanguageContext";
 import ReactMarkdown from "react-markdown";
@@ -11,10 +12,13 @@ const IconMap: Record<string, any> = {
   Terminal: Terminal,
 };
 
+type Tab = 'overview' | 'results';
+
 export default function ExperimentDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { language, t } = useTranslation();
+  const [activeTab, setActiveTab] = useState<Tab>('overview');
   
   const experiment = experiments.find(e => e.id === id);
 
@@ -52,9 +56,9 @@ export default function ExperimentDetail() {
           <span className="text-sm font-bold uppercase tracking-widest">{t('common.backToExperiments')}</span>
         </button>
 
-        <div className="mb-16">
-          <div className="flex items-center gap-6 mb-8">
-            <div className="w-16 h-16 bg-accents-1 border border-accents-2 flex items-center justify-center rounded-2xl">
+        <div className="mb-12">
+          <div className="flex flex-col md:flex-row md:items-center gap-6 mb-8">
+            <div className="w-16 h-16 bg-accents-1 border border-accents-2 flex items-center justify-center rounded-2xl shrink-0">
               <Icon size={32} className="text-foreground" />
             </div>
             <div>
@@ -95,20 +99,82 @@ export default function ExperimentDetail() {
           </div>
         </div>
 
-        <div className="prose prose-accents max-w-none dark:prose-invert prose-headings:tracking-tighter prose-headings:font-extrabold mb-20">
-          <div className="markdown-body">
-            <ReactMarkdown>{content}</ReactMarkdown>
-          </div>
+        {/* Tabs */}
+        <div className="flex gap-8 border-b border-accents-2 mb-12">
+          <button
+            onClick={() => setActiveTab('overview')}
+            className={`pb-4 text-sm font-bold uppercase tracking-widest transition-colors relative ${
+              activeTab === 'overview' ? 'text-foreground' : 'text-accents-4 hover:text-accents-6'
+            }`}
+          >
+            <div className="flex items-center gap-2">
+              <FileText size={14} />
+              {t('experiment.overview')}
+            </div>
+            {activeTab === 'overview' && (
+              <motion.div 
+                layoutId="activeTabExp"
+                className="absolute bottom-0 left-0 right-0 h-0.5 bg-foreground"
+              />
+            )}
+          </button>
+          <button
+            onClick={() => setActiveTab('results')}
+            className={`pb-4 text-sm font-bold uppercase tracking-widest transition-colors relative ${
+              activeTab === 'results' ? 'text-foreground' : 'text-accents-4 hover:text-accents-6'
+            }`}
+          >
+            <div className="flex items-center gap-2">
+              <BarChart3 size={14} />
+              {t('experiment.results')}
+            </div>
+            {activeTab === 'results' && (
+              <motion.div 
+                layoutId="activeTabExp"
+                className="absolute bottom-0 left-0 right-0 h-0.5 bg-foreground"
+              />
+            )}
+          </button>
         </div>
 
-        <div className="border-t border-accents-2 pt-16">
-          <h2 className="text-3xl font-bold tracking-tighter mb-8">{t('experiment.results')}</h2>
-          <div className="p-8 bg-accents-1 rounded-3xl border border-accents-2 border-dashed">
-            <p className="text-accents-5 leading-relaxed italic">
-              "{results}"
-            </p>
-          </div>
-        </div>
+        <AnimatePresence mode="wait">
+          {activeTab === 'overview' ? (
+            <motion.div
+              key="overview"
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 10 }}
+              transition={{ duration: 0.2 }}
+              className="prose prose-accents max-w-none dark:prose-invert prose-headings:tracking-tighter prose-headings:font-extrabold mb-20"
+            >
+              <div className="markdown-body">
+                <ReactMarkdown>{content}</ReactMarkdown>
+              </div>
+            </motion.div>
+          ) : (
+            <motion.div
+              key="results"
+              initial={{ opacity: 0, x: 10 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -10 }}
+              transition={{ duration: 0.2 }}
+              className="mb-20"
+            >
+              <div className="p-10 bg-accents-1 rounded-3xl border border-accents-2 border-dashed relative overflow-hidden group">
+                <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+                  <BarChart3 size={120} />
+                </div>
+                <h3 className="text-xs font-bold uppercase tracking-widest text-accents-4 mb-6 flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-geist-success" />
+                  Final Findings
+                </h3>
+                <p className="text-2xl font-medium text-accents-6 leading-relaxed italic relative z-10">
+                  "{results}"
+                </p>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </motion.div>
     </div>
   );

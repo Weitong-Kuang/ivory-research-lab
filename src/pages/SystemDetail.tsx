@@ -1,6 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { motion } from "motion/react";
-import { ArrowLeft, Cpu, Box, Layout, Activity } from "lucide-react";
+import { useState } from "react";
+import { motion, AnimatePresence } from "motion/react";
+import { ArrowLeft, Cpu, Box, Layout, Activity, Clock, FileText } from "lucide-react";
 import { systems } from "../data/systems";
 import { useTranslation } from "../context/LanguageContext";
 import ReactMarkdown from "react-markdown";
@@ -11,10 +12,13 @@ const IconMap: Record<string, any> = {
   Layout: Layout,
 };
 
+type Tab = 'overview' | 'updates';
+
 export default function SystemDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { language, t } = useTranslation();
+  const [activeTab, setActiveTab] = useState<Tab>('overview');
   
   const system = systems.find(s => s.id === id);
 
@@ -51,9 +55,9 @@ export default function SystemDetail() {
           <span className="text-sm font-bold uppercase tracking-widest">{t('common.backToSystems')}</span>
         </button>
 
-        <div className="mb-16">
-          <div className="flex items-center gap-6 mb-8">
-            <div className="w-16 h-16 bg-accents-1 border border-accents-2 flex items-center justify-center rounded-2xl">
+        <div className="mb-12">
+          <div className="flex flex-col md:flex-row md:items-center gap-6 mb-8">
+            <div className="w-16 h-16 bg-accents-1 border border-accents-2 flex items-center justify-center rounded-2xl shrink-0">
               <Icon size={32} className="text-foreground" />
             </div>
             <div>
@@ -104,31 +108,99 @@ export default function SystemDetail() {
           </div>
         </div>
 
-        <div className="prose prose-accents max-w-none dark:prose-invert prose-headings:tracking-tighter prose-headings:font-extrabold mb-20">
-          <div className="markdown-body">
-            <ReactMarkdown>{content}</ReactMarkdown>
-          </div>
+        {/* Tabs */}
+        <div className="flex gap-8 border-b border-accents-2 mb-12">
+          <button
+            onClick={() => setActiveTab('overview')}
+            className={`pb-4 text-sm font-bold uppercase tracking-widest transition-colors relative ${
+              activeTab === 'overview' ? 'text-foreground' : 'text-accents-4 hover:text-accents-6'
+            }`}
+          >
+            <div className="flex items-center gap-2">
+              <FileText size={14} />
+              {t('system.overview')}
+            </div>
+            {activeTab === 'overview' && (
+              <motion.div 
+                layoutId="activeTab"
+                className="absolute bottom-0 left-0 right-0 h-0.5 bg-foreground"
+              />
+            )}
+          </button>
+          <button
+            onClick={() => setActiveTab('updates')}
+            className={`pb-4 text-sm font-bold uppercase tracking-widest transition-colors relative ${
+              activeTab === 'updates' ? 'text-foreground' : 'text-accents-4 hover:text-accents-6'
+            }`}
+          >
+            <div className="flex items-center gap-2">
+              <Clock size={14} />
+              {t('system.updates')}
+              {system.updates.length > 0 && (
+                <span className="ml-1 px-1.5 py-0.5 bg-accents-2 text-[10px] rounded-full">
+                  {system.updates.length}
+                </span>
+              )}
+            </div>
+            {activeTab === 'updates' && (
+              <motion.div 
+                layoutId="activeTab"
+                className="absolute bottom-0 left-0 right-0 h-0.5 bg-foreground"
+              />
+            )}
+          </button>
         </div>
 
-        {system.updates.length > 0 && (
-          <div className="border-t border-accents-2 pt-16">
-            <h2 className="text-3xl font-bold tracking-tighter mb-10">{t('system.updates')}</h2>
-            <div className="space-y-8">
-              {system.updates.map((update, idx) => (
-                <div key={idx} className="relative pl-8 border-l border-accents-2">
-                  <div className="absolute left-[-5px] top-0 w-2 h-2 rounded-full bg-foreground" />
-                  <div className="mb-2">
-                    <span className="text-xs font-bold text-accents-4 uppercase tracking-widest">{update.date}</span>
-                  </div>
-                  <h3 className="text-xl font-bold mb-2">{language === 'en' ? update.titleEn : update.titleZh}</h3>
-                  <p className="text-accents-5 text-sm leading-relaxed">
-                    {language === 'en' ? update.contentEn : update.contentZh}
-                  </p>
+        <AnimatePresence mode="wait">
+          {activeTab === 'overview' ? (
+            <motion.div
+              key="overview"
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 10 }}
+              transition={{ duration: 0.2 }}
+              className="prose prose-accents max-w-none dark:prose-invert prose-headings:tracking-tighter prose-headings:font-extrabold mb-20"
+            >
+              <div className="markdown-body">
+                <ReactMarkdown>{content}</ReactMarkdown>
+              </div>
+            </motion.div>
+          ) : (
+            <motion.div
+              key="updates"
+              initial={{ opacity: 0, x: 10 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -10 }}
+              transition={{ duration: 0.2 }}
+              className="mb-20"
+            >
+              {system.updates.length > 0 ? (
+                <div className="space-y-12">
+                  {system.updates.map((update, idx) => (
+                    <div key={idx} className="relative pl-10 border-l border-accents-2">
+                      <div className="absolute left-[-6px] top-0 w-3 h-3 rounded-full bg-foreground border-4 border-background" />
+                      <div className="mb-3">
+                        <span className="text-xs font-bold text-accents-4 uppercase tracking-widest px-2 py-1 bg-accents-1 border border-accents-2 rounded-md">
+                          {update.date}
+                        </span>
+                      </div>
+                      <h3 className="text-2xl font-extrabold tracking-tight mb-3">
+                        {language === 'en' ? update.titleEn : update.titleZh}
+                      </h3>
+                      <p className="text-accents-5 text-lg leading-relaxed max-w-2xl">
+                        {language === 'en' ? update.contentEn : update.contentZh}
+                      </p>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          </div>
-        )}
+              ) : (
+                <div className="py-20 text-center bg-accents-1 rounded-3xl border border-dashed border-accents-2">
+                  <p className="text-accents-4 font-medium">No updates recorded for this system yet.</p>
+                </div>
+              )}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </motion.div>
     </div>
   );

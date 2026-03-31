@@ -8,18 +8,18 @@ export default function Home() {
 
   const features = [
     {
-      title: "Substrate Independence",
-      description: "Decoupling consciousness from biological hardware through neural mapping.",
+      title: t('home.feature.substrate.title'),
+      description: t('home.feature.substrate.desc'),
       icon: <Cpu className="text-geist-success" size={20} />,
     },
     {
-      title: "Personality Replication",
-      description: "High-fidelity digital reconstruction of behavioral and cognitive patterns.",
+      title: t('home.feature.personality.title'),
+      description: t('home.feature.personality.desc'),
       icon: <Zap className="text-geist-warning" size={20} />,
     },
     {
-      title: "Secure Archiving",
-      description: "Encrypted, decentralized storage for long-term digital preservation.",
+      title: t('home.feature.secure.title'),
+      description: t('home.feature.secure.desc'),
       icon: <Shield className="text-accents-5" size={20} />,
     },
   ];
@@ -103,9 +103,9 @@ export default function Home() {
             <div className="md:col-span-8 next-card bg-background flex flex-col justify-between min-h-[400px]">
               <div>
                 <span className="next-badge mb-4 inline-block">Protocol V2.4</span>
-                <h2 className="text-4xl font-bold tracking-tighter mb-6">Neural Mapping Efficiency.</h2>
+                <h2 className="text-4xl font-bold tracking-tighter mb-6">{t('home.ongoing.title')}</h2>
                 <p className="text-accents-5 max-w-md">
-                  Our latest mapping protocol has achieved a 40% reduction in cognitive latency during digital reconstruction.
+                  {t('home.ongoing.desc')}
                 </p>
               </div>
               <div className="mt-8 pt-8 border-t border-accents-2 flex items-center justify-between">
@@ -114,18 +114,18 @@ export default function Home() {
                     <div key={i} className="w-8 h-8 rounded-full bg-accents-2 border-2 border-background" />
                   ))}
                 </div>
-                <span className="text-xs font-bold text-accents-4 uppercase tracking-widest">12 Researchers Active</span>
+                <span className="text-xs font-bold text-accents-4 uppercase tracking-widest">{t('home.researchers.active')}</span>
               </div>
             </div>
             
             <div className="md:col-span-4 next-card bg-foreground text-background flex flex-col justify-center items-center text-center">
               <Globe size={48} className="mb-6 text-geist-success" />
-              <h3 className="text-2xl font-bold tracking-tighter mb-4">Global Network</h3>
+              <h3 className="text-2xl font-bold tracking-tighter mb-4">{t('home.network.title')}</h3>
               <p className="text-accents-4 text-sm mb-8">
-                Join our decentralized node network to help process substrate data.
+                {t('home.network.desc')}
               </p>
               <button className="w-full py-3 bg-background text-foreground rounded-md font-bold text-sm hover:bg-accents-2 transition-colors">
-                Connect Node
+                {t('home.network.cta')}
               </button>
             </div>
           </div>
