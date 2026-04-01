@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "motion/react";
-import { useTranslation } from "../../../context/LanguageContext";
 import { Zap, Code, Terminal, ArrowRight } from "lucide-react";
 import Link from "next/link";
 
@@ -11,9 +10,7 @@ const IconMap: Record<string, any> = {
   Terminal: Terminal,
 };
 
-export default function ExperimentsClient({ experiments, lang }: { experiments: any[], lang: string }) {
-  const { language, t } = useTranslation();
-
+export default function ExperimentsClient({ experiments }: { experiments: any[] }) {
   return (
     <div className="max-w-7xl mx-auto px-6 py-20">
       <motion.div
@@ -21,12 +18,12 @@ export default function ExperimentsClient({ experiments, lang }: { experiments: 
         animate={{ opacity: 1, y: 0 }}
       >
         <div className="mb-20">
-          <span className="next-badge mb-6 inline-block">{t('experiments.chaos')}</span>
+          <span className="next-badge mb-6 inline-block">Small Experiment Area (Rapid Validation)</span>
           <h1 className="text-5xl md:text-7xl font-extrabold tracking-tighter mb-8">
-            {t('nav.experiments')}
+            Experiments
           </h1>
           <p className="text-xl text-accents-5 max-w-2xl leading-relaxed">
-            {t('nav.experiments.desc')}
+            Small Experiment Area (Rapid Validation)
           </p>
         </div>
 
@@ -47,20 +44,20 @@ export default function ExperimentsClient({ experiments, lang }: { experiments: 
                 </div>
                 <div className="mb-6">
                   <h3 className="text-2xl font-bold tracking-tight mb-1">
-                    {language === 'en' ? experiment.titleEn : experiment.titleZh}
+                    {experiment.titleEn}
                   </h3>
                   <p className="text-xs font-bold uppercase tracking-widest text-accents-4">
-                    {language === 'en' ? experiment.subtitleEn : experiment.subtitleZh}
+                    {experiment.subtitleEn}
                   </p>
                 </div>
                 <p className="text-accents-5 leading-relaxed mb-10">
-                  {language === 'en' ? experiment.descriptionEn : experiment.descriptionZh}
+                  {experiment.descriptionEn}
                 </p>
                 <Link 
-                  href={`/${lang}/experiments/${experiment.id}`}
+                  href={`/experiments/${experiment.id}`}
                   className="flex items-center gap-2 text-sm font-bold text-foreground group-hover:text-accents-5 transition-colors"
                 >
-                  {t('experiment.view')}
+                  View Experiment
                   <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
                 </Link>
               </motion.div>

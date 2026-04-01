@@ -2,29 +2,23 @@
 
 import { motion } from "motion/react";
 import { ChevronRight, ArrowRight, Zap, Shield, Globe, Cpu } from "lucide-react";
-import { useTranslation } from "../../context/LanguageContext";
 import Link from "next/link";
-import { useParams } from "next/navigation";
 
 export default function Home() {
-  const { t } = useTranslation();
-  const params = useParams();
-  const lang = params.lang as string;
-
   const features = [
     {
-      title: t('home.feature.substrate.title'),
-      description: t('home.feature.substrate.desc'),
+      title: "Substrate Independence",
+      description: "Decoupling consciousness from biological hardware through neural mapping.",
       icon: <Cpu className="text-geist-success" size={20} />,
     },
     {
-      title: t('home.feature.personality.title'),
-      description: t('home.feature.personality.desc'),
+      title: "Personality Replication",
+      description: "High-fidelity digital reconstruction of behavioral and cognitive patterns.",
       icon: <Zap className="text-geist-warning" size={20} />,
     },
     {
-      title: t('home.feature.secure.title'),
-      description: t('home.feature.secure.desc'),
+      title: "Secure Archiving",
+      description: "Encrypted, decentralized storage for long-term digital preservation.",
       icon: <Shield className="text-accents-5" size={20} />,
     },
   ];
@@ -42,21 +36,21 @@ export default function Home() {
             transition={{ duration: 0.5 }}
           >
             <span className="next-badge mb-6 inline-block">
-              {t('nav.home.desc')}
+              System Entry + Current Status
             </span>
             <h1 className="text-6xl md:text-8xl font-extrabold tracking-tighter mb-8 bg-clip-text text-transparent bg-gradient-to-b from-foreground to-accents-5">
               IVORY LAB.
             </h1>
             <p className="text-xl text-accents-5 max-w-2xl mx-auto mb-10 leading-relaxed">
-              {t('home.intro')}
+              Ivory Lab is a research initiative exploring the intersection of digital consciousness and substrate independence.
             </p>
             
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link href={`/${lang}/research`} className="next-button-primary !px-8 !py-3 text-base">
-                {t('hero.cta.primary')}
+              <Link href="/research" className="next-button-primary !px-8 !py-3 text-base">
+                Read Research
               </Link>
-              <Link href={`/${lang}/experiments`} className="next-button-secondary !px-8 !py-3 text-base">
-                {t('nav.experiments')}
+              <Link href="/experiments" className="next-button-secondary !px-8 !py-3 text-base">
+                Experiments
                 <ArrowRight size={18} />
               </Link>
             </div>
@@ -68,8 +62,8 @@ export default function Home() {
       <section className="py-24 border-t border-accents-2">
         <div className="max-w-7xl mx-auto px-6">
           <div className="mb-12">
-            <h2 className="text-3xl font-bold tracking-tighter mb-4">{t('home.progress')}</h2>
-            <p className="text-accents-5">{t('nav.home.desc')}</p>
+            <h2 className="text-3xl font-bold tracking-tighter mb-4">Latest Progress Summary</h2>
+            <p className="text-accents-5">System Entry + Current Status</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {features.map((feature, index) => (
@@ -101,16 +95,16 @@ export default function Home() {
       <section className="py-24 bg-accents-1 border-t border-accents-2">
         <div className="max-w-7xl mx-auto px-6">
           <div className="mb-12">
-            <h2 className="text-3xl font-bold tracking-tighter mb-4">{t('home.ongoing')}</h2>
-            <p className="text-accents-5">{t('nav.experiments.desc')}</p>
+            <h2 className="text-3xl font-bold tracking-tighter mb-4">Ongoing Experiments</h2>
+            <p className="text-accents-5">Small Experiment Area (Rapid Validation)</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
             <div className="md:col-span-8 next-card bg-background flex flex-col justify-between min-h-[400px]">
               <div>
                 <span className="next-badge mb-4 inline-block">Protocol V2.4</span>
-                <h2 className="text-4xl font-bold tracking-tighter mb-6">{t('home.ongoing.title')}</h2>
+                <h2 className="text-4xl font-bold tracking-tighter mb-6">Neural Mapping Efficiency</h2>
                 <p className="text-accents-5 max-w-md">
-                  {t('home.ongoing.desc')}
+                  Our latest mapping protocol has achieved a 40% reduction in cognitive latency during digital reconstruction.
                 </p>
               </div>
               <div className="mt-8 pt-8 border-t border-accents-2 flex items-center justify-between">
@@ -119,18 +113,18 @@ export default function Home() {
                     <div key={i} className="w-8 h-8 rounded-full bg-accents-2 border-2 border-background" />
                   ))}
                 </div>
-                <span className="text-xs font-bold text-accents-4 uppercase tracking-widest">{t('home.researchers.active')}</span>
+                <span className="text-xs font-bold text-accents-4 uppercase tracking-widest">12 Researchers Active</span>
               </div>
             </div>
             
             <div className="md:col-span-4 next-card bg-foreground text-background flex flex-col justify-center items-center text-center">
               <Globe size={48} className="mb-6 text-geist-success" />
-              <h3 className="text-2xl font-bold tracking-tighter mb-4">{t('home.network.title')}</h3>
+              <h3 className="text-2xl font-bold tracking-tighter mb-4">Global Network</h3>
               <p className="text-accents-4 text-sm mb-8">
-                {t('home.network.desc')}
+                Join our decentralized node network to help process substrate data.
               </p>
               <button className="w-full py-3 bg-background text-foreground rounded-md font-bold text-sm hover:bg-accents-2 transition-colors">
-                {t('home.network.cta')}
+                Connect Node
               </button>
             </div>
           </div>

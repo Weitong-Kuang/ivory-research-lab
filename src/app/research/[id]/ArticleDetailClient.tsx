@@ -2,16 +2,10 @@
 
 import { motion } from "motion/react";
 import { ArrowLeft, Calendar, Tag } from "lucide-react";
-import { useTranslation } from "../../../../context/LanguageContext";
 import ReactMarkdown from "react-markdown";
 import Link from "next/link";
 
-export default function ArticleDetailClient({ article, lang }: { article: any, lang: string }) {
-  const { language } = useTranslation();
-  
-  const title = language === 'en' ? article.titleEn : article.titleZh;
-  const content = language === 'en' ? article.contentEn : article.contentZh;
-
+export default function ArticleDetailClient({ article }: { article: any }) {
   return (
     <div className="max-w-4xl mx-auto px-6 py-20">
       <motion.div
@@ -19,7 +13,7 @@ export default function ArticleDetailClient({ article, lang }: { article: any, l
         animate={{ opacity: 1, y: 0 }}
       >
         <Link 
-          href={`/${lang}/research`}
+          href="/research"
           className="flex items-center gap-2 text-accents-5 hover:text-foreground transition-colors mb-12 group"
         >
           <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
@@ -39,13 +33,13 @@ export default function ArticleDetailClient({ article, lang }: { article: any, l
             </div>
           </div>
           <h1 className="text-4xl md:text-6xl font-extrabold tracking-tighter mb-8 leading-tight">
-            {title}
+            {article.titleEn}
           </h1>
         </div>
 
         <div className="prose prose-accents max-w-none dark:prose-invert prose-headings:tracking-tighter prose-headings:font-extrabold">
           <div className="markdown-body">
-            <ReactMarkdown>{content}</ReactMarkdown>
+            <ReactMarkdown>{article.contentEn}</ReactMarkdown>
           </div>
         </div>
       </motion.div>

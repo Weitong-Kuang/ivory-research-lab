@@ -1,4 +1,4 @@
-import { loadAllContent } from '../lib/content';
+import { getAllContent } from '../lib/data';
 
 export interface System {
   id: string;
@@ -23,5 +23,4 @@ export interface System {
   showOnHome?: boolean;
 }
 
-const modules = import.meta.glob('/src/content/systems/*.md', { query: '?raw', import: 'default', eager: true });
-export const systems = loadAllContent(modules as Record<string, string>) as System[];
+export const systems = getAllContent('systems') as System[];

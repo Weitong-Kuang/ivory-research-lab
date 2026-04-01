@@ -4,16 +4,12 @@ import Link from "next/link";
 import { motion } from "motion/react";
 import { Terminal, Menu, X } from "lucide-react";
 import { useState, useEffect } from "react";
-import { useTranslation } from "../context/LanguageContext";
-import { useParams, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { t } = useTranslation();
-  const params = useParams();
   const pathname = usePathname();
-  const lang = params.lang as string;
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
@@ -22,11 +18,11 @@ export default function Navbar() {
   }, []);
 
   const navLinks = [
-    { href: `/${lang}`, label: t('nav.home') },
-    { href: `/${lang}/research`, label: t('nav.research') },
-    { href: `/${lang}/systems`, label: t('nav.systems') },
-    { href: `/${lang}/experiments`, label: t('nav.experiments') },
-    { href: `/${lang}/about`, label: t('nav.about') },
+    { href: "/", label: "Home" },
+    { href: "/research", label: "Research" },
+    { href: "/systems", label: "Systems" },
+    { href: "/experiments", label: "Experiments" },
+    { href: "/about", label: "About" },
   ];
 
   const isActive = (href: string) => pathname === href;
@@ -41,7 +37,7 @@ export default function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
         <div className="flex items-center gap-8">
-          <Link href={`/${lang}`} className="flex items-center gap-2 group">
+          <Link href="/" className="flex items-center gap-2 group">
             <div className="w-8 h-8 bg-foreground text-background flex items-center justify-center rounded-lg group-hover:scale-105 transition-transform">
               <Terminal size={18} />
             </div>

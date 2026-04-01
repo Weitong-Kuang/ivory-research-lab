@@ -2,29 +2,22 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { ArrowLeft, Cpu, Box, Layout, Activity, Clock, FileText } from "lucide-react";
-import { useTranslation } from "../../../../context/LanguageContext";
+import { ArrowLeft, Zap, Code, Terminal, Calendar, Activity, FileText, BarChart3 } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 
 const IconMap: Record<string, any> = {
-  Box: Box,
-  Cpu: Cpu,
-  Layout: Layout,
+  Zap: Zap,
+  Code: Code,
+  Terminal: Terminal,
 };
 
-type Tab = 'overview' | 'updates';
+type Tab = 'overview' | 'results';
 
-export default function SystemDetailClient({ system, lang }: { system: any, lang: string }) {
-  const { language, t } = useTranslation();
+export default function ExperimentDetailClient({ experiment }: { experiment: any }) {
   const [activeTab, setActiveTab] = useState<Tab>('overview');
-  const router = useRouter();
   
-  const title = language === 'en' ? system.titleEn : system.titleZh;
-  const subtitle = language === 'en' ? system.subtitleEn : system.subtitleZh;
-  const content = language === 'en' ? system.contentEn : system.contentZh;
-  const Icon = IconMap[system.icon] || Box;
+  const Icon = IconMap[experiment.icon] || Zap;
 
   return (
     <div className="max-w-4xl mx-auto px-6 py-20">
@@ -33,11 +26,11 @@ export default function SystemDetailClient({ system, lang }: { system: any, lang
         animate={{ opacity: 1, y: 0 }}
       >
         <Link 
-          href={`/${lang}/systems`}
+          href="/experiments"
           className="flex items-center gap-2 text-accents-5 hover:text-foreground transition-colors mb-12 group"
         >
           <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
-          <span className="text-sm font-bold uppercase tracking-widest">{t('common.backToSystems')}</span>
+          <span className="text-sm font-bold uppercase tracking-widest">Back to Experiments</span>
         </Link>
 
         <div className="mb-12">
@@ -47,18 +40,18 @@ export default function SystemDetailClient({ system, lang }: { system: any, lang
             </div>
             <div>
               <div className="flex items-center gap-3 mb-2">
-                <span className="text-xs font-bold uppercase tracking-widest text-accents-4">{subtitle}</span>
+                <span className="text-xs font-bold uppercase tracking-widest text-accents-4">{experiment.subtitleEn}</span>
                 <span className="w-1 h-1 bg-accents-2 rounded-full" />
                 <span className={`text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full border ${
-                  system.status === 'active' ? 'border-geist-success text-geist-success bg-geist-success/5' :
-                  system.status === 'beta' ? 'border-geist-warning text-geist-warning bg-geist-warning/5' :
+                  experiment.status === 'ongoing' ? 'border-geist-success text-geist-success bg-geist-success/5' :
+                  experiment.status === 'completed' ? 'border-geist-warning text-geist-warning bg-geist-warning/5' :
                   'border-accents-3 text-accents-5 bg-accents-1'
                 }`}>
-                  {system.status}
+                  {experiment.status}
                 </span>
               </div>
               <h1 className="text-4xl md:text-6xl font-extrabold tracking-tighter leading-tight">
-                {title}
+                {experiment.titleEn}
               </h1>
             </div>
           </div>
@@ -66,28 +59,20 @@ export default function SystemDetailClient({ system, lang }: { system: any, lang
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-8 bg-accents-1 rounded-3xl border border-accents-2">
             <div>
               <div className="flex items-center gap-2 text-xs font-bold text-accents-4 uppercase tracking-widest mb-4">
-                <Activity size={14} />
-                {t('system.progress')}
+                <Calendar size={14} />
+                Date
               </div>
-              <div className="flex items-center gap-4">
-                <div className="flex-1 h-2 bg-accents-2 rounded-full overflow-hidden">
-                  <motion.div 
-                    initial={{ width: 0 }}
-                    animate={{ width: `${system.progress}%` }}
-                    transition={{ duration: 1, delay: 0.5 }}
-                    className="h-full bg-foreground"
-                  />
-                </div>
-                <span className="text-sm font-bold">{system.progress}%</span>
-              </div>
+              <p className="text-sm font-bold">{experiment.date}</p>
             </div>
             <div>
               <div className="flex items-center gap-2 text-xs font-bold text-accents-4 uppercase tracking-widest mb-4">
-                <span className="w-2 h-2 rounded-full bg-geist-success" />
-                {t('system.status')}
+                <Activity size={14} />
+                Status
               </div>
               <p className="text-sm font-medium text-accents-5">
-                {t(`system.status.${system.status}.desc`)}
+                {experiment.status === 'ongoing' ? 'Experiment is currently in progress' :
+                 experiment.status === 'completed' ? 'Experiment has been completed' :
+                 'Experiment has failed to complete'}
               </p>
             </div>
           </div>
@@ -103,33 +88,28 @@ export default function SystemDetailClient({ system, lang }: { system: any, lang
           >
             <div className="flex items-center gap-2">
               <FileText size={14} />
-              {t('system.overview')}
+              Overview
             </div>
             {activeTab === 'overview' && (
               <motion.div 
-                layoutId="activeTab"
+                layoutId="activeTabExp"
                 className="absolute bottom-0 left-0 right-0 h-0.5 bg-foreground"
               />
             )}
           </button>
           <button
-            onClick={() => setActiveTab('updates')}
+            onClick={() => setActiveTab('results')}
             className={`pb-4 text-sm font-bold uppercase tracking-widest transition-colors relative ${
-              activeTab === 'updates' ? 'text-foreground' : 'text-accents-4 hover:text-accents-6'
+              activeTab === 'results' ? 'text-foreground' : 'text-accents-4 hover:text-accents-6'
             }`}
           >
             <div className="flex items-center gap-2">
-              <Clock size={14} />
-              {t('system.updates')}
-              {system.updates?.length > 0 && (
-                <span className="ml-1 px-1.5 py-0.5 bg-accents-2 text-[10px] rounded-full">
-                  {system.updates.length}
-                </span>
-              )}
+              <BarChart3 size={14} />
+              Results
             </div>
-            {activeTab === 'updates' && (
+            {activeTab === 'results' && (
               <motion.div 
-                layoutId="activeTab"
+                layoutId="activeTabExp"
                 className="absolute bottom-0 left-0 right-0 h-0.5 bg-foreground"
               />
             )}
@@ -147,42 +127,30 @@ export default function SystemDetailClient({ system, lang }: { system: any, lang
               className="prose prose-accents max-w-none dark:prose-invert prose-headings:tracking-tighter prose-headings:font-extrabold mb-20"
             >
               <div className="markdown-body">
-                <ReactMarkdown>{content}</ReactMarkdown>
+                <ReactMarkdown>{experiment.contentEn}</ReactMarkdown>
               </div>
             </motion.div>
           ) : (
             <motion.div
-              key="updates"
+              key="results"
               initial={{ opacity: 0, x: 10 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -10 }}
               transition={{ duration: 0.2 }}
               className="mb-20"
             >
-              {system.updates?.length > 0 ? (
-                <div className="space-y-12">
-                  {system.updates.map((update: any, idx: number) => (
-                    <div key={idx} className="relative pl-10 border-l border-accents-2">
-                      <div className="absolute left-[-6px] top-0 w-3 h-3 rounded-full bg-foreground border-4 border-background" />
-                      <div className="mb-3">
-                        <span className="text-xs font-bold text-accents-4 uppercase tracking-widest px-2 py-1 bg-accents-1 border border-accents-2 rounded-md">
-                          {update.date}
-                        </span>
-                      </div>
-                      <h3 className="text-2xl font-extrabold tracking-tight mb-3">
-                        {language === 'en' ? update.titleEn : update.titleZh}
-                      </h3>
-                      <p className="text-accents-5 text-lg leading-relaxed max-w-2xl">
-                        {language === 'en' ? update.contentEn : update.contentZh}
-                      </p>
-                    </div>
-                  ))}
+              <div className="p-10 bg-accents-1 rounded-3xl border border-accents-2 border-dashed relative overflow-hidden group">
+                <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+                  <BarChart3 size={120} />
                 </div>
-              ) : (
-                <div className="py-20 text-center bg-accents-1 rounded-3xl border border-dashed border-accents-2">
-                  <p className="text-accents-4 font-medium">No updates recorded for this system yet.</p>
-                </div>
-              )}
+                <h3 className="text-xs font-bold uppercase tracking-widest text-accents-4 mb-6 flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-geist-success" />
+                  Final Findings
+                </h3>
+                <p className="text-2xl font-medium text-accents-6 leading-relaxed italic relative z-10">
+                  &quot;{experiment.resultsEn}&quot;
+                </p>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>

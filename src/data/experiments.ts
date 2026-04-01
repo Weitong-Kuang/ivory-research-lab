@@ -1,4 +1,4 @@
-import { loadAllContent } from '../lib/content';
+import { getAllContent } from '../lib/data';
 
 export interface Experiment {
   id: string;
@@ -18,5 +18,4 @@ export interface Experiment {
   showOnHome?: boolean;
 }
 
-const modules = import.meta.glob('/src/content/experiments/*.md', { query: '?raw', import: 'default', eager: true });
-export const experiments = loadAllContent(modules as Record<string, string>) as Experiment[];
+export const experiments = getAllContent('experiments') as Experiment[];

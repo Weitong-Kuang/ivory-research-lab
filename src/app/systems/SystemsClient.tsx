@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "motion/react";
-import { useTranslation } from "../../../context/LanguageContext";
 import { Cpu, Layout, Box, ArrowRight } from "lucide-react";
 import Link from "next/link";
 
@@ -11,9 +10,7 @@ const IconMap: Record<string, any> = {
   Layout: Layout,
 };
 
-export default function SystemsClient({ systems, lang }: { systems: any[], lang: string }) {
-  const { language, t } = useTranslation();
-
+export default function SystemsClient({ systems }: { systems: any[] }) {
   return (
     <div className="max-w-7xl mx-auto px-6 py-20">
       <motion.div
@@ -21,12 +18,12 @@ export default function SystemsClient({ systems, lang }: { systems: any[], lang:
         animate={{ opacity: 1, y: 0 }}
       >
         <div className="mb-20">
-          <span className="next-badge mb-6 inline-block">{t('systems.product')}</span>
+          <span className="next-badge mb-6 inline-block">Product Entry</span>
           <h1 className="text-5xl md:text-7xl font-extrabold tracking-tighter mb-8">
-            {t('nav.systems')}
+            Systems
           </h1>
           <p className="text-xl text-accents-5 max-w-2xl leading-relaxed">
-            {t('nav.systems.desc')}
+            Structured Systems
           </p>
         </div>
 
@@ -47,20 +44,20 @@ export default function SystemsClient({ systems, lang }: { systems: any[], lang:
                 </div>
                 <div className="mb-6">
                   <h3 className="text-2xl font-bold tracking-tight mb-1">
-                    {language === 'en' ? system.titleEn : system.titleZh}
+                    {system.titleEn}
                   </h3>
                   <p className="text-xs font-bold uppercase tracking-widest text-accents-4">
-                    {language === 'en' ? system.subtitleEn : system.subtitleZh}
+                    {system.subtitleEn}
                   </p>
                 </div>
                 <p className="text-accents-5 leading-relaxed mb-10">
-                  {language === 'en' ? system.descriptionEn : system.descriptionZh}
+                  {system.descriptionEn}
                 </p>
                 <Link 
-                  href={`/${lang}/systems/${system.id}`}
+                  href={`/systems/${system.id}`}
                   className="flex items-center gap-2 text-sm font-bold text-foreground group-hover:text-accents-5 transition-colors"
                 >
-                  {t('system.explore')}
+                  Explore System
                   <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
                 </Link>
               </motion.div>
